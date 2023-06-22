@@ -4,25 +4,52 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+class BSTIterator:
+
+    def __init__(self, root: Optional[TreeNode], isReverse: bool):
+        self.stack=[]
+        while root:
+            self.stack.append(root)
+            if isReverse: root=root.right
+            else: root=root.left
+        self.reverse=isReverse
+
+    def next(self) -> int:
+        node=self.stack.pop()
+
+        if not self.reverse:
+            temp=node.right
+            while temp:
+                self.stack.append(temp)
+                temp=temp.left
+        else:
+            temp=node.left
+            while temp:
+                self.stack.append(temp)
+                temp=temp.right
+
+        return node.val
+
+    def hasNext(self) -> bool:
+        if self.stack:
+            return True
+        return False
+
 class Solution:
     def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
 
-        stack=[]
-        nums=[]
+        left=BSTIterator(root, False)
+        right=BSTIterator(root, True)
 
-        while root or stack:
-            while root:
-                stack.append(root)
-                root=root.left
+        i=left.next()
+        j=right.next()
 
-            root=stack.pop()
-            nums.append(root.val)
-            root=root.right
-
-        visited=set()
-        for n in nums:
-            if (k-n) in visited:
+        while i<j:
+            if i+j == k:
                 return True
-            visited.add(n)
-
+            elif i+j < k:
+                i = left.next()
+            else:
+                j = right.next()
         return False
