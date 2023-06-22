@@ -9,7 +9,6 @@ class Solution:
     def __init__(self):
         self.prev=None
         self.first=None
-        self.middle=None
         self.last=None
     
     def recoverTree(self, root: Optional[TreeNode]) -> None:
@@ -19,8 +18,6 @@ class Solution:
         self.inorder(root)
         if self.first and self.last:
             self.first.val, self.last.val = self.last.val, self.first.val
-        elif self.first and self.middle:
-            self.first.val, self.middle.val = self.middle.val, self.first.val
 
 
     def inorder(self, root):
@@ -32,7 +29,7 @@ class Solution:
         if self.prev and root.val<self.prev.val:
             if not self.first:
                 self.first=self.prev
-                self.middle=root
+                self.last=root
             else:
                 self.last=root
 
