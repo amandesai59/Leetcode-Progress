@@ -3,22 +3,24 @@ class Solution:
 
         ans=float('inf')
         n=len(matrix)
-        dp=[[float('inf')]*n for _ in range(n)]
+        dp=[float('inf')]*n
 
         for i in range(n):
+            temp=[0]*n
             for j in range(n):
                 if i==0:
-                    dp[i][j]=matrix[i][j]
+                    temp[j]=matrix[i][j]
                     continue
                 x=float('inf')
                 y=float('inf')
 
                 if j>0:
-                    x = dp[i-1][j-1]
+                    x = dp[j-1]
                 if j<n-1:
-                    y = dp[i-1][j+1]
-                z = dp[i-1][j]
+                    y = dp[j+1]
+                z = dp[j]
 
-                dp[i][j] = matrix[i][j] + min(x,y,z)
+                temp[j] = matrix[i][j] + min(x,y,z)
+            dp=temp[:]
 
-        return min(dp[-1])
+        return min(dp)
