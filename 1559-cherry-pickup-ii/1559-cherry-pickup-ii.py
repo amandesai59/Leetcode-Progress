@@ -4,11 +4,12 @@ class Solution:
         m=len(grid)
         n=len(grid[0])
 
-        dp = [[[-1e9]*n for _ in range(n)] for _ in range(m)]
+        dp = [[-1e9]*n for _ in range(n)]
 
-        dp[0][0][n-1] = grid[0][0] + grid[0][n-1]
+        dp[0][n-1] = grid[0][0] + grid[0][n-1]
 
         for x in range(1,m):
+            temp = [[0]*n for _ in range(n)]
             for y1 in range(n):
                 for y2 in range(n):
                     ans=-1e9
@@ -19,13 +20,15 @@ class Solution:
                             q=y2+j
                             if p>=0 and q>=0 and p<n and q<n:
 
-                                temp = grid[x][y1] + dp[x-1][y1+i][y2+j]
+                                curr = grid[x][y1] + dp[p][q]
 
                                 if y1!=y2:
-                                    temp += grid[x][y2]
+                                    curr += grid[x][y2]
 
-                                ans = max(ans, temp)
+                                ans = max(ans, curr)
 
-                    dp[x][y1][y2]=ans
+                    temp[y1][y2]=ans
+            
+            dp=temp[:]
 
-        return max(map(max, dp[m-1]))
+        return max(map(max, dp))
