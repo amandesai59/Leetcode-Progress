@@ -4,34 +4,28 @@ class Solution:
         m=len(grid)
         n=len(grid[0])
 
-        dp = [[[-1]*n for _ in range(n)] for _ in range(m)]
+        dp = [[[-1e9]*n for _ in range(n)] for _ in range(m)]
 
-        return self.rec(grid, 0, 0, n-1, m, n, dp)
+        dp[0][0][n-1] = grid[0][0] + grid[0][n-1]
 
-        
-    def rec(self, grid, x, y1, y2, m, n, dp):
+        for x in range(1,m):
+            for y1 in range(n):
+                for y2 in range(n):
+                    ans=-1e9
+                    for i in range(-1,2):
+                        for j in range(-1, 2):
 
-        if y1<0 or y2<0 or y1>=n or y2>=n:
-            return -1e9
+                            p=y1+i
+                            q=y2+j
+                            if p>=0 and q>=0 and p<n and q<n:
 
-        if dp[x][y1][y2]!=-1:
-            return dp[x][y1][y2]
+                                temp = grid[x][y1] + dp[x-1][y1+i][y2+j]
 
-        if x==m-1:
-            if y1!=y2:
-                return grid[x][y1] + grid[x][y2]
-            return grid[x][y1]
-        
-        ans=-1e9
+                                if y1!=y2:
+                                    temp += grid[x][y2]
 
-        for i in range(-1,2):
-            for j in range(-1, 2):
-                temp = grid[x][y1] + self.rec(grid, x+1, y1+i, y2+j, m, n, dp)
+                                ans = max(ans, temp)
 
-                if y1!=y2:
-                    temp += grid[x][y2]
+                    dp[x][y1][y2]=ans
 
-                ans = max(ans, temp)
-
-        dp[x][y1][y2]=ans
-        return ans
+        return max(map(max, dp[m-1]))
