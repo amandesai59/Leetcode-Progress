@@ -2,24 +2,25 @@ class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
 
         n = len(coins)
-        dp = [[0]*(amount+1) for _ in range(n)]
-
+        prev = [0]*(amount+1)
+        curr = [0]*(amount+1)
         for i in range(amount+1):
             if i%coins[0]==0:
-                dp[0][i]=i//coins[0]
+                prev[i]=i//coins[0]
             else:
-                dp[0][i]=float('inf')
+                prev[i]=float('inf')
 
         for i in range(1,n):
             for j in range(amount+1):
-                x = dp[i-1][j]
+                x = prev[j]
                 y=float('inf')
                 if coins[i]<=j:
-                    y = 1+dp[i][j-coins[i]]
+                    y = 1+curr[j-coins[i]]
 
-                dp[i][j] = min(x,y)
+                curr[j] = min(x,y)
+            prev=curr[:]
 
-        ans = dp[n-1][amount]
+        ans = prev[amount]
         if ans==float('inf'):
             return -1
         return ans
