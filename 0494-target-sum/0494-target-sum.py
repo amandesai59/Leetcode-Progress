@@ -7,21 +7,24 @@ class Solution:
         if tar%2 or tar<0:
             return 0
         tar//=2
-        dp = [[-1]*(tar+1) for _ in range(n)]
-        return self.rec(nums, n-1, tar, dp)
-            
-    def rec(self, arr, i, tar, dp):
+        dp = [0]*(tar+1)
+        temp = [0]*(tar+1)
+        if nums[0]==0:
+            dp[0]=2
+        else:
+            dp[0]=1
         
-        if i==-1:
-            return tar==0
-            
-        if dp[i][tar]!=-1:
-            return dp[i][tar]
-            
-        y=0
-        x=self.rec(arr, i-1, tar, dp)
-        if arr[i]<=tar:
-            y=self.rec(arr, i-1, tar-arr[i], dp)
-        
-        dp[i][tar]=x+y
-        return x+y
+        if nums[0]!=0 and nums[0]<=tar:
+            dp[nums[0]]=1
+             
+        for i in range(1,n):
+            for j in range(tar+1):
+                y=0
+                x=dp[j]
+                if nums[i]<=j:
+                    y=dp[j-nums[i]]
+                     
+                temp[j]=x+y
+            dp=temp[:]
+                 
+        return dp[tar]
