@@ -2,29 +2,21 @@ class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
 
         n = len(coins)
-        dp = [[-1]*(amount+1) for _ in range(n)]
-        ans = self.rec(coins, amount, n-1, dp)
+        dp = [[0]*(amount+1) for _ in range(n)]
 
-        return ans
-        
-    def rec(self, coins, amount, i, dp):
+        for i in range(amount+1):
+            if i%coins[0]==0:
+                dp[0][i]=1
+            else:
+                dp[0][i]=0
 
-        if amount==0:
-            return 1
-        
-        if i<0:
-            return 0
+        for i in range(1,n):
+            for j in range(amount+1):
+                x = dp[i-1][j]
+                y=0
+                if coins[i]<=j:
+                    y = dp[i][j-coins[i]]
 
-        if dp[i][amount]!=-1:
-            return dp[i][amount]
+                dp[i][j] = x+y
 
-        n = amount//coins[i]
-
-        x = self.rec(coins, amount, i-1, dp)
-        y=0
-        if coins[i]<=amount:
-            y = self.rec(coins, amount-coins[i], i, dp)
-
-        dp[i][amount] = x+y
-
-        return dp[i][amount]
+        return dp[n-1][amount]
