@@ -4,14 +4,13 @@ class Solution:
         n=len(text1)
         m=len(text2)
         dp = [[-1]*m for _ in range(n)]
+
         return self.rec(text1, text2, len(text1)-1, len(text2)-1, dp)
 
     def rec(self, text1, text2, i, j, dp):
 
-        if i==0 and j==0:
-            if text1[0] == text2[0]:
-                return 1
-            return 0
+        if (i==0 or j==0) and text1[i] == text2[j]:
+            return 1
 
         if dp[i][j]!=-1:
             return dp[i][j]
@@ -20,10 +19,7 @@ class Solution:
         z=0
 
         if text1[i] == text2[j]:
-            if i==0 or j==0:
-                x=1
-            else:
-                x = 1 + self.rec(text1, text2, i-1, j-1, dp)
+            x = 1 + self.rec(text1, text2, i-1, j-1, dp)
 
         else:
             if i>0:
