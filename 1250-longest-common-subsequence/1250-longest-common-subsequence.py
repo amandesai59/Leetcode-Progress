@@ -3,7 +3,7 @@ class Solution:
 
         n=len(text1)
         m=len(text2)
-        dp = [[-1]*(m+1) for _ in range(n+1)]
+        dp = [[0]*(m+1) for _ in range(n+1)]
 
         for i in range(n):
             dp[i][0]=0
