@@ -2,33 +2,25 @@ class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
 
         n=len(s)
-        dp = [[-1]*n for _ in range(n)]
-        return self.rec(s, s[::-1], n-1, n-1, dp)
+        prev = [0]*(n+1)
+        curr = [0]*(n+1)
+        text1=s
+        text2=s[::-1]
 
-    def rec(self, text1, text2, i, j, dp):
+        for i in range(1,n+1):
+            for j in range(1,n+1):
+                x=0
+                y=0
+                z=0
 
-        if i==0 and j==0:
-            if text1[0] == text2[0]:
-                return 1
-            return 0
+                if text1[i-1] == text2[j-1]:
+                    x = 1 + prev[j-1]
 
-        if dp[i][j]!=-1:
-            return dp[i][j]
-        x=0
-        y=0
-        z=0
+                else:
+                    y=prev[j]
+                    z=curr[j-1]
 
-        if text1[i] == text2[j]:
-            if i==0 or j==0:
-                x=1
-            else:
-                x = 1 + self.rec(text1, text2, i-1, j-1, dp)
-
-        else:
-            if i>0:
-                y=self.rec(text1,text2, i-1, j, dp)
-            if j>0:
-                z=self.rec(text1, text2, i, j-1, dp)
-
-        dp[i][j] = max(x,y,z)
-        return dp[i][j]
+                curr[j] = max(x,y,z)
+            prev=curr[:]
+            
+        return prev[n]
