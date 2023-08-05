@@ -3,26 +3,22 @@ class Solution:
 
         n=len(s)
         m=len(t)
-        dp=[[-1]*m for _ in range(n)]
-        return self.rec(s,t,n-1, m-1, dp)
+        dp=[[0]*m for _ in range(n)]
+        
+        if s[0]==t[0]:
+            dp[0][0]=1
 
-    def rec(self, s, t, i, j, dp):
+        for i in range(1,n):
+            for j in range(m):
+                x=0
+                if s[i]==t[j]:
+                    if j>0:
+                        x=dp[i-1][j-1]
+                    else:
+                        x=1
 
-        if i==0:
-            if j==0 and s[0]==t[0]:
-                return 1
-            return 0
+                y=dp[i-1][j]
 
-        if dp[i][j]!=-1:
-            return dp[i][j]
-        x=0
-        if s[i]==t[j]:
-            if j>0:
-                x=self.rec(s,t,i-1,j-1, dp)
-            else:
-                x=1
+                dp[i][j]=x+y
 
-        y=self.rec(s,t,i-1,j, dp)
-
-        dp[i][j]=x+y
-        return x+y
+        return dp[n-1][m-1]
