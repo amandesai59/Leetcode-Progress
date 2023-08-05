@@ -4,10 +4,6 @@ class Solution:
         n=len(word1)
         m=len(word2)
 
-        if n<m:
-            dp = [[-1]*n for _ in range(m)]
-            return self.rec(word2, word1, m-1, n-1, dp)
-
         dp = [[-1]*m for _ in range(n)]
         return self.rec(word1, word2, n-1, m-1, dp)
 
