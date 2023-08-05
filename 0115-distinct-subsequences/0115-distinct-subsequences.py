@@ -3,24 +3,20 @@ class Solution:
 
         n=len(s)
         m=len(t)
-        prev = [0]*m
         curr = [0]*m
         
         if s[0]==t[0]:
-            prev[0]=1
+            curr[0]=1
 
         for i in range(1,n):
-            for j in range(m):
+            for j in range(m-1,-1,-1):
                 x=0
                 if s[i]==t[j]:
                     if j>0:
-                        x=prev[j-1]
+                        x=curr[j-1]
                     else:
                         x=1
 
-                y=prev[j]
+                curr[j]+=x
 
-                curr[j]=x+y
-            prev=curr[:]
-
-        return prev[m-1]
+        return curr[-1]
