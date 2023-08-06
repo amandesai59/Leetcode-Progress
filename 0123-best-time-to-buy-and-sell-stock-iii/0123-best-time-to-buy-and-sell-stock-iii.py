@@ -2,20 +2,23 @@ class Solution:
     def maxProfit(self, prices: List[int]) -> int:
 
         n=len(prices)
-        curr=[[0]*(3) for _ in range(2)]
-        after=[[0]*(3) for _ in range(2)]
+        dp=[[-1]*(4) for _ in range(n)]
+        return self.rec(prices, n, 0, 0, dp)
 
-        for i in range(n-1, -1, -1):
-            for j in range(2):
-                for k in range(1,3):
-                    if j:
-                        x = - prices[i] + after[0][k]
-                        y = after[1][k]
-                    else:
-                        x = prices[i] + after[1][k-1]
-                        y = after[0][k]
+    def rec(self, prices, n, i, trNo, dp):
 
-                    curr[j][k] = max(x,y)
-            after=curr[:]
+        if i==n or trNo==4:
+            return 0
 
-        return curr[1][2]
+        if dp[i][trNo]!=-1:
+            return dp[i][trNo]
+
+        if trNo%2==0:
+            x = - prices[i] + self.rec(prices, n, i+1, trNo+1, dp)
+            y = self.rec(prices, n, i+1, trNo, dp)
+        else:
+            x = prices[i] + self.rec(prices, n, i+1, trNo+1, dp)
+            y = self.rec(prices, n, i+1, trNo, dp)
+
+        dp[i][trNo] = max(x,y)
+        return max(x,y)
