@@ -2,11 +2,13 @@ class Solution:
     def maxProfit(self, prices: List[int], fee: int) -> int:
 
         n=len(prices)
-        dp=[[0]*2 for _ in range(n+1)]
+        curr=[0,0]
+        after=[0,0]
         
         for i in range(n-1, -1, -1):
-            
-            dp[i][1] = max(-prices[i] + dp[i+1][0], dp[i+1][1])
-            dp[i][0] = max(prices[i] -fee + dp[i+1][1], dp[i+1][0])
 
-        return dp[0][1]
+            curr[1] = max(-prices[i] + after[0], after[1])
+            curr[0] = max(prices[i] -fee + after[1], after[0])
+            after=curr[:]
+
+        return after[1]
