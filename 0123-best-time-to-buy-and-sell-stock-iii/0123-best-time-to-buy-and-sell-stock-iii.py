@@ -2,17 +2,19 @@ class Solution:
     def maxProfit(self, prices: List[int]) -> int:
 
         n=len(prices)
-        dp=[[0]*(5) for _ in range(n+1)]
+        curr=[0]*5
+        after=[0]*5
 
         for i in range(n-1, -1, -1):
             for j in range(3, -1,-1):
                 if j%2==0:
-                    x = - prices[i] + dp[i+1][j+1]
-                    y = dp[i+1][j]
+                    x = - prices[i] + after[j+1]
+                    y = after[j]
                 else:
-                    x = prices[i] + dp[i+1][j+1]
-                    y = dp[i+1][j]
+                    x = prices[i] + after[j+1]
+                    y = after[j]
 
-                dp[i][j] = max(x,y)
+                curr[j] = max(x,y)
+            after=curr[:]
 
-        return dp[0][0]
+        return curr[0]
